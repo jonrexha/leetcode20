@@ -1,1 +1,649 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <algorithm>
+#include <unordered_map>
+#include <set>
 
+using namespace std;
+
+class String1 {
+public:
+    bool isCircularSentence(string sentence) {
+        stringstream X(sentence);
+        vector<string> v;
+        while (getline(X, sentence, ' ')) {
+            v.push_back(sentence);
+        }
+        char fs = v[0][0], ls = v[0][v[0].size() - 1], f1;
+        if (v.size() == 1) { return v[0][0] == v[0][v[0].size() - 1]; }
+        for (int i = 1; i < v.size(); i++) {
+            if (v[i][0] != ls) { return false; }
+            ls = v[i][v[i].size() - 1];
+        }
+        return v[v.size() - 1][v[v.size() - 1].size() - 1] == fs;
+    }
+};
+
+class String2 {
+public:
+    int findMinimumOperations(string s1, string s2, string s3) {
+        int i = 0, cnt = 0, len = min({ s1.size(), s2.size(), s3.size() });
+        while (i < len) {
+            if (s1[i] == s2[i] && s2[i] == s3[i]) {
+                i++;
+                cnt++;
+            }
+            else break;
+        }
+        if (cnt == 0) return -1;
+        return s1.size() + s2.size() + s3.size() - 3 * cnt;
+    }
+};
+
+class String3 {
+public:
+    int findTheLongestBalancedSubstring(string s) {
+        int x, y, n = s.length(), ans = 0, i = 0;
+        x = 0, y = 0;
+        while (i < n && s[i] == '1') {
+            i++;
+        }
+        for (; i < n;) {
+            x = y = 0;
+            while (i < n && s[i] == '0') {
+                i++; x++;
+            }
+            while (i < n && s[i] == '1') {
+                i++; y++;
+            }
+            ans = max(ans, min(x, y) * 2);
+        }
+        return ans;
+    }
+};
+
+class String4 {
+public:
+    string largestGoodInteger(string num) {
+        int result = -1;
+        for (int i = 0; i + 2 < num.length(); i++) {
+            if (num[i] == num[i + 1] && num[i] == num[i + 2]) {
+                result = std::max(result, num[i] - '0');
+            }
+        }
+        return (result == -1) ? "" : std::string(3, '0' + result);
+    }
+};
+
+class String5 {
+public:
+    int countPoints(string rings) {
+
+        vector<set<char>> count(10);
+        int ans = 0;
+        for (int i = 1; i < rings.size(); i += 2)
+        {
+            count[rings[i] - '0'].insert(rings[i - 1]);
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (count[i].size() == 3)
+                ans++;
+        }
+        return ans;
+    }
+};
+
+class Math1 {
+public:
+    int finalValueAfterOperations(vector<string>& operations) {
+        int x = 0;
+        for (auto& operation : operations) {
+            if (operation[1] == '+') x++;
+            else x--;
+        }
+        return x;
+    }
+};
+
+class Math2 {
+public:
+    int numJewelsInStones(string jewels, string stones) {
+        int count = 0;
+        for (int i = 0; i < jewels.length(); i++)
+        {
+            for (int j = 0; j < stones.length(); j++)
+            {
+                if (jewels[i] == stones[j]) count++;
+            }
+        }
+        return count;
+    }
+};
+
+class Math3 {
+public:
+    vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+        int n = grid.size();
+        unordered_map<int, int> mp;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                mp[grid[i][j]]++;
+            }
+        }
+
+        int miss, repeat;
+        for (int i = 1; i <= n * n; i++) {
+            if (mp[i] == 2)
+                repeat = i;
+            if (mp[i] == 0)
+                miss = i;
+        }
+
+        return { repeat, miss };
+    }
+};
+
+class Math4 {
+public:
+    vector<int> numberGame(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i += 2) swap(nums[i], nums[i + 1]);
+        return nums;
+    }
+};
+
+class Math5 {
+public:
+    vector<int> replaceElements(vector<int>& arr) {
+
+        int maxi = -1;
+        int n = arr.size();
+
+        vector<int>ans(n);
+
+        for (int i = n - 1; i >= 0; i--) {
+            ans[i] = maxi;
+            maxi = max(arr[i], maxi);
+        }
+
+        return ans;
+    }
+};
+
+class Array1 {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+        int M = *max_element(candies.begin(), candies.end());
+        vector<bool>ans;
+        for (auto x : candies) {
+            if (x + extraCandies >= M) ans.push_back(true);
+            else ans.push_back(false);
+        }
+        return ans;
+    }
+};
+
+class Array2 {
+public:
+    int subtractProductAndSum(int n) {
+        vector<int> ans;
+        while (n > 0)
+        {
+            ans.push_back(n % 10);
+            n /= 10;
+        }
+        int product = 1;
+        int sum = 0;
+        for (int i = 0; i < ans.size(); i++)
+        {
+            product *= ans[i];
+            sum += ans[i];
+        }
+        return product - sum;
+    }
+};
+
+class Array3 {
+public:
+    vector<double> convertTemperature(double Celsius) {
+        double Kelvin = Celsius + 273.15;
+        double Fahrenheit = Celsius * 1.80 + 32.00;
+        vector<double> v;
+        v.push_back(Kelvin);
+        v.push_back(Fahrenheit);
+        return v;
+    }
+};
+
+class Array4 {
+public:
+    vector<int> replaceElements(vector<int>& arr) {
+
+        int maxi = -1;
+        int n = arr.size();
+
+        vector<int>ans(n);
+
+        for (int i = n - 1; i >= 0; i--) {
+            ans[i] = maxi;
+            maxi = max(arr[i], maxi);
+        }
+
+        return ans;
+    }
+};
+
+class Array5 {
+public:
+    int maximumWealth(vector<vector<int>>& accounts) {
+        int max = 0;
+        int sum = 0;
+        for (int i = 0; i < accounts.size(); i++) {
+            for (int j = 0; j < accounts.at(i).size(); j++) {
+                sum += accounts.at(i).at(j);
+            }
+            if (max < sum) { max = sum; }
+            sum = 0;
+        }
+        return max;
+    }
+};
+
+class Matrix1 {
+public:
+    int diagonalSum(vector<vector<int>>& mat) {
+        int sum = 0;
+        int n = mat.size();
+        for (int i = 0; i < n; i++) {
+            sum += mat[i][i];
+            sum += mat[i][n - 1 - i];
+        }
+        if (n % 2 == 1) {
+            sum -= mat[n / 2][n / 2];
+        }
+        return sum;
+    }
+};
+
+class Matrix2 {
+public:
+    int countNegatives(vector<vector<int>>& grid) {
+        int count = 0;
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = 0; j < grid[i].size(); j++) {
+                if (grid[i][j] < 0) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+};
+
+class Matrix3 {
+public:
+    vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+        int n = grid.size();
+        unordered_map<int, int> mp;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                mp[grid[i][j]]++;
+            }
+        }
+
+        int miss, repeat;
+        for (int i = 1; i <= n * n; i++) {
+            if (mp[i] == 2)
+                repeat = i;
+            if (mp[i] == 0)
+                miss = i;
+        }
+
+        return { repeat, miss };
+    }
+};
+
+class Matrix4 {
+public:
+    vector<int> rowAndMaximumOnes(vector<vector<int>>& mat) {
+        int maxcount = 0;
+        int index = 0;
+        for (int i = 0; i < mat.size(); i++) {
+            int countone = 0;
+            for (int j = 0; j < mat[0].size(); j++) {
+                if (mat[i][j] == 1) {
+                    countone++;
+                }
+            }
+            if (countone > maxcount) {
+                maxcount = countone;
+                index = i;
+            }
+        }
+        return { index, maxcount };
+    }
+};
+
+class Matrix5 {
+public:
+    vector<vector<int>> transpose(vector<vector<int>>& matrix) {
+        int row = matrix.size();
+        int col = matrix[0].size();
+        vector<vector<int>> result(col, vector<int>(row, 0));
+        for (int i = 0; i < col; ++i) {
+            for (int j = 0; j < row; ++j) {
+                result[i][j] = matrix[j][i];
+            }
+        }
+        return result;
+    }
+};
+
+int main() {
+    int choice;
+    cout << "Choose a number from 1 to 20:" << endl;
+    cin >> choice;
+
+    switch (choice) {
+        case 1: {
+            // Example usage of String1 class
+            String1 str1;
+            cout << "Enter a sentence: ";
+            string sentence;
+            cin.ignore(); // Ignore newline character in buffer
+            getline(cin, sentence);
+            bool result = str1.isCircularSentence(sentence);
+            cout << "Is circular sentence: " << (result ? "true" : "false") << endl;
+            break;
+        }
+        case 2: {
+            // Example usage of String2 class
+            String2 str2;
+            cout << "Enter three strings: ";
+            string s1, s2, s3;
+            cin >> s1 >> s2 >> s3;
+            int result = str2.findMinimumOperations(s1, s2, s3);
+            cout << "Minimum operations: " << result << endl;
+            break;
+        }
+        case 3: {
+            // Example usage of String3 class
+            String3 str3;
+            cout << "Enter a string: ";
+            string s;
+            cin >> s;
+            int result = str3.findTheLongestBalancedSubstring(s);
+            cout << "Length of longest balanced substring: " << result << endl;
+            break;
+        }         case 4: {
+            // Example usage of String4 class
+            String4 str4;
+            cout << "Enter a number: ";
+            string num;
+            cin >> num;
+            string result = str4.largestGoodInteger(num);
+            cout << "Largest good integer: " << result << endl;
+            break;
+        }
+        case 5: {
+            // Example usage of String5 class
+            String5 str5;
+            cout << "Enter a string of rings: ";
+            string rings;
+            cin >> rings;
+            int result = str5.countPoints(rings);
+            cout << "Number of points: " << result << endl;
+            break;
+        }
+        case 6: {
+            // Example usage of Math1 class
+            Math1 math1;
+            cout << "Enter a list of operations (+ or -): ";
+            vector<string> operations;
+            string op;
+            while (cin >> op) {
+                if (op == "q") break;
+                operations.push_back(op);
+            }
+            int result = math1.finalValueAfterOperations(operations);
+            cout << "Final value after operations: " << result << endl;
+            break;
+        }
+        case 7: {
+            // Example usage of Math2 class
+            Math2 math2;
+            cout << "Enter your jewels and stones: ";
+            string jewels, stones;
+            cin >> jewels >> stones;
+            int result = math2.numJewelsInStones(jewels, stones);
+            cout << "Number of jewels in stones: " << result << endl;
+            break;
+        }
+        case 8: {
+            // Example usage of Math3 class
+            Math3 math3;
+            cout << "Enter a 2D grid of integers: ";
+            int n;
+            cin >> n;
+            vector<vector<int>> grid(n, vector<int>(n, 0));
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    cin >> grid[i][j];
+                }
+            }
+            vector<int> result = math3.findMissingAndRepeatedValues(grid);
+            cout << "Repeated value: " << result[0] << ", Missing value: " << result[1] << endl;
+            break;
+        }
+        case 9: {
+            // Example usage of Math4 class
+            Math4 math4;
+            cout << "Enter a list of numbers: ";
+            vector<int> nums;
+            int num;
+            while (cin >> num) {
+                if (num == -1) break;
+                nums.push_back(num);
+            }
+            vector<int> result = math4.numberGame(nums);
+            cout << "Modified list of numbers: ";
+            for (int i = 0; i < result.size(); ++i) {
+                cout << result[i] << " ";
+            }
+            cout << endl;
+            break;
+        }
+        case 10: {
+            // Example usage of Math5 class
+            Math5 math5;
+            cout << "Enter an array of integers: ";
+            vector<int> arr;
+            int val;
+            while (cin >> val) {
+                if (val == -1) break;
+                arr.push_back(val);
+            }
+            vector<int> result = math5.replaceElements(arr);
+            cout << "Modified array: ";
+            for (int i = 0; i < result.size(); ++i) {
+                cout << result[i] << " ";
+            }
+            cout << endl;
+            break;
+        }
+        case 11: {
+            // Example usage of Array1 class
+            Array1 array1;
+            cout << "Enter a list of candies and extra candies: ";
+            vector<int> candies;
+            int candy;
+            while (cin >> candy) {
+                if (candy == -1) break;
+                candies.push_back(candy);
+            }
+            int extraCandies;
+            cout << "Enter the number of extra candies: ";
+            cin >> extraCandies;
+            vector<bool> result = array1.kidsWithCandies(candies, extraCandies);
+            cout << "Result: ";
+            for (int i = 0; i < result.size(); ++i) {
+                cout << (result[i] ? "true" : "false") << " ";
+            }
+            cout << endl;
+            break;
+        }
+        case 12: {
+            // Example usage of Array2 class
+            Array2 array2;
+            cout << "Enter an integer: ";
+            int n;
+            cin >> n;
+            int result = array2.subtractProductAndSum(n);
+            cout << "Result: " << result << endl;
+            break;
+        }
+        case 13: {
+            // Example usage of Array3 class
+            Array3 array3;
+            cout << "Enter a temperature in Celsius: ";
+            double Celsius;
+            cin >> Celsius;
+            vector<double> result = array3.convertTemperature(Celsius);
+            cout << "Temperature in Kelvin: " << result[0] << ", Temperature in Fahrenheit: " << result[1] << endl;
+            break;
+        }
+        case 14: {
+            // Example usage of Array4 class
+            Array4 array4;
+            cout << "Enter an array of integers: ";
+            vector<int> arr;
+            int val;
+            while (cin >> val) {
+                if (val == -1) break;
+                arr.push_back(val);
+            }
+            vector<int> result = array4.replaceElements(arr);
+            cout << "Modified array: ";
+            for (int i = 0; i < result.size(); ++i) {
+                cout << result[i] << " ";
+            }
+            cout << endl;
+            break;
+        }
+        case 15: {
+            // Example usage of Array5 class
+            Array5 array5;
+            cout << "Enter a 2D vector of accounts: ";
+            int rows, cols;
+            cin >> rows >> cols;
+            vector<vector<int>> accounts(rows, vector<int>(cols, 0));
+            for (int i = 0; i < rows; ++i) {
+                for (int j = 0; j < cols; ++j) {
+                    cin >> accounts[i][j];
+                }
+            }
+            int result = array5.maximumWealth(accounts);
+            cout << "Maximum wealth: " << result << endl;
+            break;
+        }
+        case 16: {
+            // Example usage of Matrix1 class
+            Matrix1 matrix1;
+            cout << "Enter a square matrix: ";
+            int n;
+            cin >> n;
+            vector<vector<int>> mat(n, vector<int>(n, 0));
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    cin >> mat[i][j];
+                }
+            }
+            int result = matrix1.diagonalSum(mat);
+            cout << "Diagonal sum: " << result << endl;
+            break;
+        }
+        case 17: {
+            // Example usage of Matrix2 class
+            Matrix2 matrix2;
+            cout << "Enter a 2D vector: ";
+            int rows, cols;
+            cin >> rows >> cols;
+            vector<vector<int>> grid(rows, vector<int>(cols, 0));
+            for (int i = 0; i < rows; ++i) {
+                for (int j = 0; j < cols; ++j) {
+                    cin >> grid[i][j];
+                }
+            }
+            int result = matrix2.countNegatives(grid);
+            cout << "Number of negative values: " << result << endl;
+            break;
+        }
+        case 18: {
+            // Example usage of Matrix3 class
+            Matrix3 matrix3;
+            cout << "Enter a 2D grid of integers: ";
+            int n;
+            cin >> n;
+            vector<vector<int>> grid(n, vector<int>(n, 0));
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    cin >> grid[i][j];
+                }
+            }
+            vector<int> result = matrix3.findMissingAndRepeatedValues(grid);
+            cout << "Repeated value: " << result[0] << ", Missing value: " << result[1] << endl;
+            break;
+        }
+        case 19: {
+            // Example usage of Matrix4 class
+            Matrix4 matrix4;
+            cout << "Enter a 2D matrix of 0s and 1s: ";
+            int rows, cols;
+            cin >> rows >> cols;
+            vector<vector<int>> mat(rows, vector<int>(cols, 0));
+            for (int i = 0; i < rows; ++i) {
+                for (int j = 0; j < cols; ++j) {
+                    cin >> mat[i][j];
+                }
+            }
+            vector<int> result = matrix4.rowAndMaximumOnes(mat);
+            cout << "Row index with maximum 1s: " << result[0] << ", Number of 1s: " << result[1] << endl;
+            break;
+        }
+        case 20: {
+            // Example usage of Matrix5 class
+            Matrix5 matrix5;
+            cout << "Enter a 2D matrix: ";
+            int rows, cols;
+            cin >> rows >> cols;
+            vector<vector<int>> matrix(rows, vector<int>(cols, 0));
+            for (int i = 0; i < rows; ++i) {
+                for (int j = 0; j < cols; ++j) {
+                    cin >> matrix[i][j];
+                }
+            }
+            vector<vector<int>> result = matrix5.transpose(matrix);
+            cout << "Transposed matrix:" << endl;
+            for (int i = 0; i < result.size(); ++i) {
+                for (int j = 0; j < result[0].size(); ++j) {
+                    cout << result[i][j] << " ";
+                }
+                cout << endl;
+            }
+            break;
+        }
+        default:
+            cout << "Invalid choice!" << endl;
+            break;
+    }
+
+    return 0;
+}
